@@ -1,8 +1,6 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 
@@ -15,6 +13,9 @@ public class Asset {
     private BigDecimal retirementAccounts;
     private BigDecimal cars;
     private BigDecimal otherAssets;
+    @OneToOne
+    private User user;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }
