@@ -1,6 +1,5 @@
 package com.example.dto;
 
-import com.example.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

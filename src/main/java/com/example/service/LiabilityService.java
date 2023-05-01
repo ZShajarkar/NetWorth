@@ -19,8 +19,8 @@ public class LiabilityService {
     }
 
 
-    public LiabilityDto save(LiabilityDto userDto) {
-        final Liability liability = liabilityMapper.toEntity(userDto);
+    public LiabilityDto save(LiabilityDto liabilityDto) {
+        final Liability liability = liabilityMapper.toEntity(liabilityDto);
         final Liability save = liabilityRepository.save(liability);
         return liabilityMapper.toDto(save);
     }
