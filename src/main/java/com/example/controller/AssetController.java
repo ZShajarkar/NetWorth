@@ -18,7 +18,7 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping
     public ResponseEntity<?> add(@RequestBody AssetDto assetDto) {
         try {
             final UserDto userDto = new UserDto();

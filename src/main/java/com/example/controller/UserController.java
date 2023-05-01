@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping
     public ResponseEntity<?> register(@RequestBody UserDto userDto) {
         try {
             final UserDto save = userService.save(userDto);

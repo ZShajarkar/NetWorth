@@ -18,7 +18,7 @@ public class LiabilityController {
         this.liabilityService = liabilityService;
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping
     public ResponseEntity<?> add(@RequestBody LiabilityDto liabilityDto) {
         try {
             final UserDto userDto = new UserDto();
