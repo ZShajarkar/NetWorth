@@ -1,10 +1,7 @@
 package com.example.controller;
 
 import com.example.dto.AssetDto;
-import com.example.dto.UserDto;
-import com.example.repository.UserRepository;
-import com.example.service.AssetService;
-import com.example.util.JwtTokenUtil;
+import com.example.service.AssetServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("asset")
 public class AssetController {
-    private final AssetService assetService;
-
+    private final AssetServiceImpl assetService;
 
 
     @PostMapping

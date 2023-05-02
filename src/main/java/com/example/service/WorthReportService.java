@@ -1,43 +1,47 @@
 package com.example.service;
 
+import com.example.dto.WealthDto;
 import com.example.entity.Asset;
 import com.example.entity.Liability;
-import com.example.repository.AssetRepository;
-import com.example.repository.LiabilityRepository;
 import com.example.repository.UserRepository;
 import com.example.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WorthReportService {
-    private final AssetRepository assetRepository;
-    private final JwtTokenUtil jwtTokenUtil;
+public class WorthReportService implements WealthServiceImpl {
     private final UserRepository userRepository;
-    private final LiabilityRepository liabilityRepository;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    public BigDecimal calculateNetWorth(String token) {
-        final Long userId = getUserIdFromToken(token);
-        return getTotalAsset(userId).min(getTotalLiability(userId));
+    public WealthDto calculateNetWorth(String token) {
+        final Long userId = jwtTokenUtil.getUserIdFromToken(token);
+        final List<Object[]> assetAndLiabilityBYUserId = userRepository.getAssetAndLiabilityBYUserId(userId);
+        final BigDecimal totalLiability = getTotalLiability(getLiabilityFromObjectArray(assetAndLiabilityBYUserId.get(0)));
+        final BigDecimal totalAsset = getTotalAsset(getAssetsFromObjectArray(assetAndLiabilityBYUserId.get(0)));
+        final WealthDto wealthDto = new WealthDto();
+        final BigDecimal netWealth = totalAsset.subtract(totalLiability);
+        return wealthDto.setTotalAsset(totalAsset).setTotalLiability(totalLiability).setNetWealth(netWealth);
     }
 
-    private BigDecimal getTotalAsset(Long userId) {
-
-        final Asset byUserId = assetRepository.findByUserId(userId);
-        return byUserId.getCars().add(byUserId.getCheckingAccounts()).add(byUserId.getRealState()).add(byUserId.getRetirementAccounts()).add(byUserId.getOtherAssets()).add(byUserId.getSavingAccounts());
+    public Asset getAssetsFromObjectArray(Object[] objects) {
+        return (Asset) objects[0];
     }
 
-    private BigDecimal getTotalLiability(Long userId) {
-        final Liability byUserId = liabilityRepository.findByUserId(userId);
-        return byUserId.getCarLoans().add(byUserId.getLoans()).add(byUserId.getCreditCardDebt()).add(byUserId.getOtherDebt()).add(byUserId.getPersonalLoans()).add(byUserId.getStudentLoans());
+    public Liability getLiabilityFromObjectArray(Object[] objects) {
+        return (Liability) objects[1];
     }
 
-    private Long getUserIdFromToken(String token) {
-        final String userEmail = jwtTokenUtil.getUsernameFromToken(token);
-        final Long userId = userRepository.findByEmail(userEmail).getId();
-        return userId;
+    private BigDecimal getTotalAsset(Asset asset) {
+        return asset.getCars().add(asset.getCheckingAccounts()).add(asset.getRealState()).add(asset.getRetirementAccounts()).add(asset.getOtherAssets()).add(asset.getSavingAccounts());
     }
+
+    private BigDecimal getTotalLiability(Liability liability) {
+        return liability.getCarLoans().add(liability.getLoans()).add(liability.getCreditCardDebt()).add(liability.getOtherDebt()).add(liability.getPersonalLoans()).add(liability.getStudentLoans());
+    }
+
+
 }

@@ -21,7 +21,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         final String passWord = byEmail.getPassWord();
         final String email = byEmail.getEmail();
         if (email.equals(username)) {
-            return new User(email, byEmail.getPassWord(),
+            return new User(email, passWord,
                     new ArrayList<>());
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);

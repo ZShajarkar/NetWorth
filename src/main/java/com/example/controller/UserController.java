@@ -4,7 +4,7 @@ import com.example.dto.JwtRequest;
 import com.example.dto.JwtResponse;
 import com.example.dto.UserDto;
 import com.example.service.JwtUserDetailsService;
-import com.example.service.UserService;
+import com.example.service.UserServiceImpl;
 import com.example.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +15,25 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final JwtUserDetailsService userDetailsService;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
         try {
-            final UserDto save = userService.save(userDto);
-            return ResponseEntity.ok(save);
+            userService.save(userDto);
+            return ResponseEntity.ok("Successful");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return (ResponseEntity<?>) ResponseEntity.badRequest();
         }
     }

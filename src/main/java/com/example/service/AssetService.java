@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AssetService {
+public class AssetService implements AssetServiceImpl {
     private final AssetRepository assetRepository;
     private final AssetMapper assetMapper;
     private final JwtTokenUtil jwtTokenUtil;
@@ -20,7 +20,7 @@ public class AssetService {
 
 
     public AssetDto save(AssetDto assetDto, String token) {
-        final Long userId = getUserIdFromToken(token.substring(7));
+        final Long userId = jwtTokenUtil.getUserIdFromToken(token);
         final UserDto userDto = new UserDto();
         userDto.setId(userId);
         assetDto.setUser(userDto);
@@ -29,9 +29,4 @@ public class AssetService {
         return assetMapper.toDto(save);
     }
 
-    private Long getUserIdFromToken(String token) {
-        final String userEmail = jwtTokenUtil.getUsernameFromToken(token);
-        final Long userId = userRepository.findByEmail(userEmail).getId();
-        return userId;
-    }
 }

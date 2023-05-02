@@ -19,8 +19,8 @@ public class User {
     @NotNull  @Column(unique = true) @Email(message = "Email must be valid")
     private String email;
     private String passWord;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     private Liability liability;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     private Asset asset;
 }
