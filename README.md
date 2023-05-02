@@ -4,7 +4,7 @@ A spring boot application that helps you to calculate your net wealth using MySQ
 
 ## Installation
 
-•  Clone the repository: `git clone https://github.com/ZShajarkar/net-worth.git`
+•  Clone the repository: `git clone https://github.com/ZShajarkar/NetWorth.git`
 
 •  Navigate to the project directory: `cd net-worth`
 
