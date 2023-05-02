@@ -3,12 +3,16 @@ package com.example.controller;
 import com.example.dto.AssetDto;
 import com.example.dto.UserDto;
 import com.example.service.AssetService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
+@ApiOperation(value = "Asset API", tags = "Asset API")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 @RequestMapping("asset")
 public class AssetController {

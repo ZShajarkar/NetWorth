@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import com.example.service.WorthReportService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
 
 @CrossOrigin
 @RestController
+@ApiOperation(value = "Report API", tags = "Report API")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 @RequestMapping("report")
 public class WorthReportController {
