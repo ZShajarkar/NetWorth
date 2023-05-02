@@ -3,20 +3,17 @@ package com.example.controller;
 import com.example.dto.AssetDto;
 import com.example.dto.UserDto;
 import com.example.service.AssetService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("asset")
 public class AssetController {
     private final AssetService assetService;
 
-    @Autowired
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
 
     @PostMapping
     public ResponseEntity<?> add(@RequestBody AssetDto assetDto) {
