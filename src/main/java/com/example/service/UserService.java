@@ -26,6 +26,7 @@ public class UserService implements UserServiceImpl {
         final String encode = passwordEncoder.encode(userDto.getPassWord());
         userDto.setPassWord(encode);
         final User user = userMapper.toEntity(userDto);
+
         final User save = userRepository.save(user);
         return userMapper.toDto(save);
     }
