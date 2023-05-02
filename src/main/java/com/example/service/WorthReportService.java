@@ -4,27 +4,28 @@ import com.example.entity.Asset;
 import com.example.entity.Liability;
 import com.example.repository.AssetRepository;
 import com.example.repository.LiabilityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.repository.UserRepository;
+import com.example.util.JwtTokenUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 public class WorthReportService {
     private final AssetRepository assetRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserRepository userRepository;
     private final LiabilityRepository liabilityRepository;
 
-    @Autowired
-    public WorthReportService(AssetRepository assetRepository, LiabilityRepository liabilityRepository) {
-        this.assetRepository = assetRepository;
-        this.liabilityRepository = liabilityRepository;
-    }
-
-    public BigDecimal calculateNetWorth(Long userId) {
+    public BigDecimal calculateNetWorth(String token) {
+        final Long userId = getUserIdFromToken(token);
         return getTotalAsset(userId).min(getTotalLiability(userId));
     }
 
     private BigDecimal getTotalAsset(Long userId) {
+
         final Asset byUserId = assetRepository.findByUserId(userId);
         return byUserId.getCars().add(byUserId.getCheckingAccounts()).add(byUserId.getRealState()).add(byUserId.getRetirementAccounts()).add(byUserId.getOtherAssets()).add(byUserId.getSavingAccounts());
     }
@@ -34,4 +35,9 @@ public class WorthReportService {
         return byUserId.getCarLoans().add(byUserId.getLoans()).add(byUserId.getCreditCardDebt()).add(byUserId.getOtherDebt()).add(byUserId.getPersonalLoans()).add(byUserId.getStudentLoans());
     }
 
+    private Long getUserIdFromToken(String token) {
+        final String userEmail = jwtTokenUtil.getUsernameFromToken(token);
+        final Long userId = userRepository.findByEmail(userEmail).getId();
+        return userId;
+    }
 }

@@ -2,30 +2,26 @@ package com.example.controller;
 
 import com.example.dto.AssetDto;
 import com.example.dto.UserDto;
+import com.example.repository.UserRepository;
 import com.example.service.AssetService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import com.example.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@ApiOperation(value = "Asset API", tags = "Asset API")
-@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 @RequestMapping("asset")
 public class AssetController {
     private final AssetService assetService;
 
 
+
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody AssetDto assetDto) {
+    public ResponseEntity<?> add(@RequestHeader("Authorization") String token, @RequestBody AssetDto assetDto) {
         try {
-            final UserDto userDto = new UserDto();
-            userDto.setId(1L);
-            assetDto.setUser(userDto);
-            final AssetDto save = assetService.save(assetDto);
+            final AssetDto save = assetService.save(assetDto, token);
             return ResponseEntity.ok(save);
         } catch (Exception e) {
             return (ResponseEntity<?>) ResponseEntity.badRequest();
