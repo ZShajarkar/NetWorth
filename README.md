@@ -1,6 +1,6 @@
 # Net Worth
 
-A spring boot application that helps you to calculate your net wealth using MySQL database and Swagger UI.
+A spring boot application that helps you to calculate your net wealth using MySQL database , Java and Swagger UI.
 
 ## Installation
 
